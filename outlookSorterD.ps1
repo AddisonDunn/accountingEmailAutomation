@@ -1,6 +1,7 @@
 ﻿# Addison Dunn, Michael Vabner 2016
 #http://stackoverflow.com/questions/22159170/grab-files-from-most-recently-received-email-in-specific-outlook-folder
 
+#$ErrorActionPreference = 'Stop'
 echo Starting
 
 #Get the inbox folder
@@ -26,18 +27,30 @@ $filepath = “C:\Users\addison.dunn\Documents\temp_folder”
 #    echo "here"
 #}
 # For-loop
+
 for($i=1; $i -lt $inbox.Count; $i++)
 {
     $email = $inbox.Item($i)
     If((0 -lt $email.Attachments.Count) -And  ( -Not $email.FlagStatus -eq 1))
     {
+        If ($email.SenderEmailType -eq "EX") 
+        {
+            $email.Sender.GetExchangeUser().PrimarySmtpAddress
+        }
+        else
+        {
+            $email.SenderEmailAddress
+        }
+            
         
+        
+
         echo "Email subject: " $email.Subject
 
-        $attachment = $email.Attachments.Item(1)
-        $attachment | %{$_.saveasfile((join-path $filepath $_.filename))}
-        echo "Loaded."
-        echo " "
+        #$attachment = $email.Attachments.Item(1)
+        #$attachment | %{$_.saveasfile((join-path $filepath $_.filename))}
+        #echo "Loaded."
+        #echo " "
     }
 }
 
