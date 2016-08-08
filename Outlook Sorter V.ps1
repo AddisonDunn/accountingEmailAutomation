@@ -17,4 +17,8 @@ Until ($ExcelWorkSheet.Cells.Item($i, 1).Value() -eq $null)
 
 
 
+#How to create a folder based on name after "@" and before the ".com"
 
+$testemail = "bill@microsoft.com"
+$testemail = $testemail -replace ".*@" -replace ".com.*"
+New-Item C:\$testemail -type directory 
